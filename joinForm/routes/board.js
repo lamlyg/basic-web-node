@@ -10,6 +10,8 @@ var pool = mysql.createPool({
   database: 'tutorial'
 });
 
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
     // board/ 로 접속할 경우 전체 목록 표시로 리다이렉팅
@@ -116,3 +118,42 @@ router.post('/update', function(req,res,next){
         });
     });
 });
+
+//글 삭제 화면 표시 GET
+router.get('/delete', function(req,res,next){
+    var idx = req.query.idx;
+
+    pool.getConnection(function(err,connection){
+
+        if(err) console.error("커넥션 객체 얻어오기 에러 : ",err);
+        var sql = "select idx, creator_id, title, content, hit from board where idx = ?";
+        connection.query(sql,[idx],function(err,rows){
+            if(err) console.error(err);
+            console.log("delete에서 1개 글 조회 결과 확인 : ",rows);
+            res.render('delete',{title: "글 삭제를 위해 패스워드를 입력하세요.", row:rows[0]});
+            connection.release();
+        });
+    });
+});
+
+//글 삭제 로직 처리 POST
+router.post('/delete', function(req,res,next){
+    var idx = req.body.idx;
+    var passwd = req.body.passwd;
+
+    pool.getConnection(function(err,connection){
+        var sql = "delete from board where idx=? and passwd=?";
+        
+        connection.query(sql,[idx,passwd],function(err,result){
+            
+            console.log(result);
+            if(err) console.error("글 삭제 중 에러 발생 err : ",err);
+           
+            res.redirect('/board/');
+           
+            connection.release();
+        });
+    });
+});
+
+

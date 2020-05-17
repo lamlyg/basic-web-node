@@ -35,5 +35,15 @@
                 </tr>
             </table>
         </form>
+        <form action="/board/delete" method="get">
+            <table border="1">
+                <input type="hidden" name="idx" value="<%=row.idx%>"/>
+                <tr>
+                    <td>
+                        <button type="submit">글 삭제</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
     </body>
 </html>
