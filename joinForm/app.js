@@ -8,6 +8,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var join = require('./routes/joinForm');
 var board = require('./routes/board');
+var fileUploadRouter = require('./routes/upload');
+
 
 var app = express();
 
@@ -25,6 +27,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/join', join);
 app.use('/board', board);
+app.use('/upload', fileUploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
